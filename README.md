@@ -193,3 +193,66 @@ Downloading the Images
 
 As we see in output, 20 images took 27.88 seconds to download since we didn't use any threads.
 Now lets alter the code a bit to improve the speed.
+
+```
+def main():
+    start = time.perf_counter() 
+    print(f"Grabbing the URLs...")
+    get_urls('https://unsplash.com/t/nature')
+    print("Downloading the Images")
+
+    threads = []
+
+    for link in img_url:
+        t = threading.Thread(target=download_images, args=[link])
+        t.start()
+        threads.append(t)
+    
+    for thread in threads:
+        thread.join()
+    
+    finish = time.perf_counter()
+    print(f"{len(img_url)} Images Downloaded in {round(finish - start, 2)} second(s)")
+```
+
+In `main` section, we created an empty list to store the threads. Then we created threads looping our `img_url` list. We create another loop to join the threads. This avoids the thread execution to move further without downloading all the images.
+
+Now the result would be surprising.
+
+**Output**
+
+```
+Grabbing the URLs...
+Downloading the Images
+20 Images Downloaded in 8.34 second(s)
+```
+As you can see the output, Threads reduced the time from `27.88 second(s)` to `8.34 second(s)`
+
+### ThreadPoolExecutor
+
+We can also use ThreadPoolExecutor for the same. This would be simplified than using the threads. we don't need threading module. we are going to use `ThreadPoolExecutor` from `concurrent.futures` module.
+
+We're going to import the module first
+
+```
+import concurrent.futures
+```
+
+Then we need to alter the code like below
+
+```
+with concurrent.futures.ThreadPoolExecutor() as executor:
+        for link in img_url:
+            executor.submit(download_images, link)
+```
+
+We removed all the threading from the main function and replaced the above code. We are using ThreadPoolExecutor and looping the `img_url`. Then we submit the executor with the function `download_images` and passing the link as an attribute. This would do the same thing, which we did with threading.
+
+The Output seems similar.
+
+```
+Grabbing the URLs...
+Downloading the Images
+20 Images Downloaded in 7.92 second(s)
+```
+

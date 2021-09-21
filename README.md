@@ -255,4 +255,3 @@ Grabbing the URLs...
 Downloading the Images
 20 Images Downloaded in 7.92 second(s)
 ```
-

@@ -3,7 +3,7 @@ import time
 from subprocess import PIPE
 import threading
 
-servers = ['192.168.1.1', '192.168.1.2', '192.168.1.3', '192.168.1.4', '192.168.1.5', '192.168.1.6']
+servers = ['192.168.1.1', '192.168.1.2', '192.168.1.3', '192.168.1.4', '192.168.1.5', '192.168.1.6', '192.168.1.7']
 
 def check_availability(server):
     p = subprocess.run(['ping', '-c', '1', server], stdout=PIPE, stderr=PIPE)
